@@ -3,6 +3,11 @@ import { signupSchema } from "@/lib/validation/auth-validate";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 
+
+export const config = {
+    runtime: 'nodejs'
+  };
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
