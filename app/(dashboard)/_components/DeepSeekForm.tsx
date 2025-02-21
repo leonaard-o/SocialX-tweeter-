@@ -6,6 +6,7 @@ import { Loader2, ChevronRight } from "lucide-react";
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import Header from './_common/Header';
 
 
 interface DeepSeekFormProps {
@@ -27,7 +28,7 @@ const DeepSeekForm = ({ initialQuery = "", onGenerate }: DeepSeekFormProps) => {
     setPrompt("");
 
     try {
-        // Aquí ya deberías recibir directamente el string
+        // Aquí ya deberías recibir directamente el string
         const aiResponse = await onGenerate(prompt);
         setResponses((prev) => [{ text: aiResponse, type: "ai" }, ...prev]);
     } catch (error) {
@@ -43,7 +44,7 @@ const DeepSeekForm = ({ initialQuery = "", onGenerate }: DeepSeekFormProps) => {
   const handleFileUpload = (type: 'file' | 'image') => {
     const input = document.createElement('input');
     input.type = 'file';
-    input.accept = type === 'file' ? '*' : 'image/*';
+    input.accept = type === 'file' ? '' : 'image/';
     input.onchange = (e: Event) => {
       const target = e.target as HTMLInputElement;
       const file = target.files?.[0];
@@ -87,7 +88,7 @@ const DeepSeekForm = ({ initialQuery = "", onGenerate }: DeepSeekFormProps) => {
         }, 1500);
       })
       .catch(error => {
-        console.error('Error al acceder a la cámara:', error);
+        console.error('Error al acceder a la cámara:', error);
         setResponses(prev => [{ text: "Error al tomar foto", type: "error" }, ...prev]);
       });
   };
@@ -116,7 +117,8 @@ const DeepSeekForm = ({ initialQuery = "", onGenerate }: DeepSeekFormProps) => {
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center p-4">
       <div className="w-full max-w-3xl flex flex-col items-center space-y-6">
-        <h1 className="text-xl font-semibold">Grok 2</h1>
+         
+      <Header label="Grok 3" showBackArrow />
 
         <div className="w-full h-96 overflow-y-auto flex flex-col-reverse space-y-4 space-y-reverse scrollbar-hide p-2">
           {responses.map((msg, index) => (

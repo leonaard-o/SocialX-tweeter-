@@ -19,10 +19,9 @@ export async function GET() {
     const currentUserId = +session.user.id;
 
     const user = await prisma.user.findUnique({
-      where: {
-        id: currentUserId,
-      },
-    });
+        where: { id: currentUserId },
+        select: { id: true, email: true }, // Solo seleccionar campos necesarios
+      });
 
     if (!user) {
       return new NextResponse("User not found", { status: 404 });

@@ -2,8 +2,10 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prismadb";
 import { NextResponse } from "next/server";
 
-export async function GET(request: Request, context: any) {
-  const { params } = context;
+export async function GET(
+  request: Request,
+  { params }: { params: { username: string } } // ✅ Desestructuración correcta
+) {
   try {
     const session = await auth();
     if (!session?.user?.id) {
@@ -13,8 +15,7 @@ export async function GET(request: Request, context: any) {
       );
     }
 
-    const username = params.username;
-    if (!username) {
+    if (!params?.username) { // ✅ Validación más segura
       return NextResponse.json(
         { message: "Username must be provided", status: "error" },
         { status: 400 }
@@ -23,7 +24,7 @@ export async function GET(request: Request, context: any) {
 
     const existingUser = await prisma.user.findUnique({
       where: {
-        username: username,
+        username: params.username,
       },
       select: {
         id: true,
@@ -39,7 +40,6 @@ export async function GET(request: Request, context: any) {
         updatedAt: true,
         followingIds: true,
         hasNotification: true,
-        //isVerified: true,
         subscription: {
           select: {
             plan: true,
@@ -47,6 +47,7 @@ export async function GET(request: Request, context: any) {
         },
       },
     });
+
     if (!existingUser) {
       return NextResponse.json(
         { message: "User not found", status: "error" },

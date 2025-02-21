@@ -9,6 +9,7 @@ export async function POST(req: Request) {
   const body = await req.text();
   const signature = (await headers()).get("stripe-signature") as string;
 
+
   if (!signature) {
     return new NextResponse("Missing Stripe signature", { status: 400 });
   }
@@ -28,8 +29,9 @@ export async function POST(req: Request) {
 
   if (event.type === "checkout.session.completed") {
     const subscription = await stripe.subscriptions.retrieve(
-      session.subscription as string
-    );
+  session.subscription as string,
+  { expand: ["items.data"] } // Solo expandir los campos necesarios
+);
 
     if (!session?.metadata?.userId) {
       return new NextResponse("User is required", { status: 400 });
