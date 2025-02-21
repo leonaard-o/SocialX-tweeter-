@@ -159,7 +159,7 @@ useEffect(() => {
             </div>
           </div>
 
-          <div className="mt-1 w-full flex  h-[4em] mb-10 border-b-[1px] dark:border-[rgb(47,51,54)]">
+          <div className="mt-1 w-full flex  mb-10 border-b-[1px] dark:border-[rgb(47,51,54)]">
             <div
               dangerouslySetInnerHTML={{ __html: post.body }}
               className="lg:h-24 text-black dark:text-white overflow-hidden break-words line-clamp-4 font-semibold"
